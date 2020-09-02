@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AccountManager</string>
+    <string name="textViewKey">Enter Master Key</string>
+    <string name="textViewNewKey">Enter new Master Key</string>
+    <string name="generate_key">Generate Key</string>
+    <string name="go_key">Go</string>
+</resources>
