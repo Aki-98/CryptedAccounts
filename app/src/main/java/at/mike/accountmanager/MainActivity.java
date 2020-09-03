@@ -28,18 +28,34 @@ import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.Key;
 
-public class MainActivity extends AppCompatActivity implements StartFragment.OnActivtyCallbackListener {
+public class MainActivity extends AppCompatActivity implements ActivityCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.fragment_main, new StartFragment()).commit();
     }
 
     @Override
-    public void onCallback(String master_key) {
+    public void onCallback(String master_key, int mode) {
         FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = null;
 
-        //fm.beginTransaction().add(R.id.fragment_main, new AccountsFragment()).commit();
+        switch (mode) {
+            case Constants.OPEN_ACC_FRG:
+                fragment = new AccountFragment(master_key);
+                break;
+            case Constants.OPEN_ADD_ACC_FRG:
+                fragment = new AddOrUpdAccountFragment(master_key, Constants.ADD_NEW_ACC);
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            fm.beginTransaction().replace(R.id.fragment_main, fragment).commit();
+        }
     }
 }

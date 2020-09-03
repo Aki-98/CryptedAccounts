@@ -27,11 +27,7 @@ import javax.crypto.AEADBadTagException;
 
 public class StartFragment extends Fragment {
 
-    private OnActivtyCallbackListener onActivtyCallbackListener;
-
-    public interface OnActivtyCallbackListener {
-        void onCallback(String master_key);
-    }
+    private ActivityCallback activityCallbackListener;
 
     public StartFragment() {
         // Required empty public constructor
@@ -83,7 +79,7 @@ public class StartFragment extends Fragment {
                     }
 
                     // go back to MainActivity
-                    onActivtyCallbackListener.onCallback(master_key);
+                    activityCallbackListener.onCallback(master_key, Constants.OPEN_ACC_FRG);
                 }
             });
         }
@@ -96,13 +92,18 @@ public class StartFragment extends Fragment {
                 public void onClick(View view) {
                     String master_key = editTextKey.getText().toString();
 
+                    if (master_key.isEmpty()) {
+                        editTextKey.setError("Key is empty");
+                        return;
+                    }
+
                     EncryptionManager encryptionManager = new EncryptionManager(getContext());
 
                     try {
                         String savedKey = encryptionManager.get("MASTER_KEY", master_key);
 
                         // go back to MainActivity
-                        onActivtyCallbackListener.onCallback(master_key);
+                        activityCallbackListener.onCallback(master_key, Constants.OPEN_ACC_FRG);
                     } catch (javax.crypto.AEADBadTagException e) {
                         Toast.makeText(getContext(), "invalid key", Toast.LENGTH_SHORT).show();
                     }
@@ -115,14 +116,14 @@ public class StartFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        if (context instanceof OnActivtyCallbackListener) {
-            onActivtyCallbackListener = (OnActivtyCallbackListener) context;
+        if (context instanceof ActivityCallback) {
+            activityCallbackListener = (ActivityCallback) context;
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        onActivtyCallbackListener = null;
+        activityCallbackListener = null;
     }
 }
