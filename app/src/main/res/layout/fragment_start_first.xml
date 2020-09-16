@@ -31,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:text="@string/textViewNewKey"
-                android:textAlignment="center"
                 android:textColor="@android:color/white" />
 
             <EditText

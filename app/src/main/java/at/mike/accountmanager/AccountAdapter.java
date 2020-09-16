@@ -1,13 +1,20 @@
 package at.mike.accountmanager;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +38,11 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         Account account = accounts.get(position);
 
         holder.textViewPlatform.setText(account.getPlatform());
+
+        Glide.with(context)
+                .load(account.getLogo())
+                .centerCrop()
+                .into(holder.imageViewLogo);
     }
 
     @Override
@@ -45,11 +57,13 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewPlatform;
+        private ImageView imageViewLogo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textViewPlatform = itemView.findViewById(R.id.textViewPlatform);
+            imageViewLogo = itemView.findViewById(R.id.imageLogo);
         }
     }
 }

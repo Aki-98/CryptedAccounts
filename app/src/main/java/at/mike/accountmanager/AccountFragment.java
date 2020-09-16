@@ -2,6 +2,7 @@ package at.mike.accountmanager;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import javax.crypto.AEADBadTagException;
+
 public class AccountFragment extends Fragment {
 
+    private final String TAG = "AccountFragment";
     private ActivityCallback activityCallbackListener;
+    private String masterKey;
 
     public AccountFragment(String master_key) {
-
+        masterKey = master_key;
     }
 
     @Nullable
@@ -32,25 +37,32 @@ public class AccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account_list, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_accounts);
+        EncryptionManager encryptionManager = new EncryptionManager(getContext());
         AccountAdapter accountAdapter = new AccountAdapter();
+
+        try {
+            accountAdapter.setAccounts(encryptionManager.getEncryptedAccounts(masterKey));
+        } catch (AEADBadTagException e) {
+            e.printStackTrace();
+        }
 
         recyclerView.setAdapter(accountAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
 
-        AccountViewModel accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
+        /*AccountViewModel accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         accountViewModel.getAllAccounts().observe(getViewLifecycleOwner(), new Observer<List<Account>>() {
             @Override
             public void onChanged(List<Account> accounts) {
                 accountAdapter.setAccounts(accounts);
             }
-        });
+        });*/
 
         FloatingActionButton fabAddAcc = view.findViewById(R.id.fab_add_account);
         fabAddAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activityCallbackListener.onCallback(null,Constants.ADD_NEW_ACC);
+                activityCallbackListener.onCallback(masterKey, Constants.ADD_NEW_ACC);
             }
         });
 

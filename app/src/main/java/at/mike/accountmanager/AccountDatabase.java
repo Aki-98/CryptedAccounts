@@ -44,9 +44,8 @@ public abstract class AccountDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            accountDao.insert(new Account("Facebook", null, "mzauner98@gmail.com", "password"));
-            accountDao.insert(new Account("Instagram", null, "mzauner98@gmail.com", "password"));
-            accountDao.insert(new Account("Twitter", null, "mzauner98@gmail.com", "password"));
+            accountDao.insert(new Account("Instagram", null, "mzauner98@gmail.com", "password", ""));
+            accountDao.insert(new Account("Twitter", null, "mzauner98@gmail.com", "password", ""));
             return null;
         }
     }

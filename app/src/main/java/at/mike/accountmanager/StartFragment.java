@@ -27,6 +27,7 @@ import javax.crypto.AEADBadTagException;
 
 public class StartFragment extends Fragment {
 
+    private final String TAG = "StartFragment";
     private ActivityCallback activityCallbackListener;
 
     public StartFragment() {

@@ -4,4 +4,9 @@
     <string name="textViewNewKey">Enter new Master Key</string>
     <string name="generate_key">Generate Key</string>
     <string name="go_key">Go</string>
+    <string name="hint_platform">Platform</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_logo">Logo</string>
 </resources>

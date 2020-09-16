@@ -2,14 +2,23 @@ package at.mike.accountmanager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
+
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.crypto.AEADBadTagException;
 
 public class EncryptionManager {
@@ -38,11 +47,13 @@ public class EncryptionManager {
         return null;
     }
 
-    public void writeOrUpdateAccount(Account account) {
-        //SharedPreferences.Editor sharedPrefsEditor = encryptedSharedPreferences.edit();
-        //Gson gson = new Gson();
+    public void writeOrUpdateAccount(Account account, String master_key) throws AEADBadTagException {
+        encryptedSharedPreferences = getEncryptedSharedPreferences(master_key);
 
-        //sharedPrefsEditor.putString(account.getPlatform(), gson.toJson(account));
+        Gson gson = new Gson();
+        SharedPreferences.Editor sharedPrefsEditor = encryptedSharedPreferences.edit();
+        sharedPrefsEditor.putString(account.getPlatform(), gson.toJson(account));
+        sharedPrefsEditor.apply();
     }
 
     public String get(String name, String master_key) throws AEADBadTagException {
@@ -81,5 +92,24 @@ public class EncryptionManager {
         }
 
         return null;
+    }
+
+    public List<Account> getEncryptedAccounts(String master_key) throws AEADBadTagException {
+        List<Account> accounts = new ArrayList<>();
+        Gson gson = new Gson();
+
+        encryptedSharedPreferences = getEncryptedSharedPreferences(master_key);
+
+        Map<String, ?> all = encryptedSharedPreferences.getAll();
+
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            if (!entry.getKey().equals("MASTER_KEY")) {
+                //Log.d(TAG, "Key: " + entry.getKey() + ", Value: " + String.valueOf(entry.getValue()));
+                Account tmpAccount = gson.fromJson(String.valueOf(entry.getValue()), Account.class);
+                accounts.add(tmpAccount);
+            }
+        }
+
+        return accounts;
     }
 }

@@ -22,15 +22,19 @@ public class Account {
     @ColumnInfo
     private String password;
 
+    @ColumnInfo
+    private String logo;
+
     @Ignore
     public Account() {
     }
 
-    public Account(String platform, String username, String email, String password) {
+    public Account(String platform, String username, String email, String password, String logo) {
         this.platform = platform;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.logo = logo;
     }
 
     public String getPlatform() {
@@ -63,5 +67,13 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }
