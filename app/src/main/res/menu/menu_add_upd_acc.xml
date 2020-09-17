@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/visible"
-        android:title="visible"
-        android:icon="@drawable/ic_visible_on"
+        android:id="@+id/account_delete"
+        android:title="delete"
+        android:icon="@drawable/ic_delete"
         app:showAsAction="ifRoom">
     </item>
     <item
-        android:id="@+id/check"
+        android:id="@+id/account_update"
         android:title="check"
         android:icon="@drawable/ic_baseline_check_24"
         app:showAsAction="ifRoom">

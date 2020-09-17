@@ -17,12 +17,19 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     private Context context;
     private List<Account> accounts = new ArrayList<>();
+    private ActivityCallback activityCallbackListener;
+    private String masterKey;
+
+    public AccountAdapter(String masterKey) {
+        this.masterKey = masterKey;
+    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_account, parent, false);
         context = parent.getContext();
+        activityCallbackListener = (ActivityCallback) context;
 
         return new ViewHolder(itemView);
     }
@@ -32,11 +39,10 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         Account account = accounts.get(position);
 
         holder.textViewPlatform.setText(account.getPlatform());
-
-        /*Glide.with(context)
-                .load(account.getLogo())
-                .centerCrop()
-                .into(holder.imageViewLogo);*/
+        holder.itemView.setOnClickListener((View v) -> {
+            // open AddOrUpdAccountFragment
+            activityCallbackListener.onCallback(masterKey, Constants.UPD_ACC, account);
+        });
     }
 
     @Override
@@ -51,13 +57,11 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewPlatform;
-        private ImageView imageViewLogo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textViewPlatform = itemView.findViewById(R.id.textViewPlatform);
-            imageViewLogo = itemView.findViewById(R.id.imageLogo);
         }
     }
 }

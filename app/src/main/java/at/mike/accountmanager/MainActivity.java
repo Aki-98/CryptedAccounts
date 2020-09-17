@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback 
     }
 
     @Override
-    public void onCallback(String master_key, int mode) {
+    public void onCallback(String master_key, int mode, Account account) {
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = null;
 
@@ -34,9 +34,11 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback 
 
             case Constants.OPEN_ADD_ACC_FRG:
             case Constants.ADD_NEW_ACC:
-                fragment = new AddOrUpdAccountFragment(master_key, Constants.ADD_NEW_ACC);
+                fragment = new AddOrUpdAccountFragment(master_key, Constants.ADD_NEW_ACC, null);
                 break;
 
+            case Constants.UPD_ACC:
+                fragment = new AddOrUpdAccountFragment(master_key, Constants.UPD_ACC, account);
             default:
                 break;
         }

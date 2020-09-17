@@ -144,4 +144,22 @@ public class EncryptionManager {
 
         return accounts;
     }
+
+    /**
+     * delete an account from sharedPreferences
+     * @param master_key key to encrypt/decrypt sharedPreferences
+     * @param platform account which should be deleted
+     * @throws AEADBadTagException wrong key exception
+     */
+    public void deleteAccount(String master_key, String platform)  throws AEADBadTagException {
+        encryptedSharedPreferences = getEncryptedSharedPreferences(master_key);
+
+        if (encryptedSharedPreferences != null) {
+            SharedPreferences.Editor editor = encryptedSharedPreferences.edit();
+            editor.remove(platform);
+            editor.apply();
+
+            Log.d(TAG, "Remove Account(Platform): " + platform);
+        }
+    }
 }

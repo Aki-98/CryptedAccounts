@@ -70,7 +70,7 @@ public class StartFragment extends Fragment {
                 }
 
                 // go back to MainActivity
-                activityCallbackListener.onCallback(master_key, Constants.OPEN_ACC_FRG);
+                activityCallbackListener.onCallback(master_key, Constants.OPEN_ACC_FRG, null);
             });
         }
         else if (view.getId() == R.id.fragment_start_layout) {
@@ -91,7 +91,7 @@ public class StartFragment extends Fragment {
                     String savedKey = encryptionManager.get("MASTER_KEY", master_key);
 
                     // go back to MainActivity
-                    activityCallbackListener.onCallback(master_key, Constants.OPEN_ACC_FRG);
+                    activityCallbackListener.onCallback(master_key, Constants.OPEN_ACC_FRG, null);
                 } catch (javax.crypto.AEADBadTagException e) {
                     Toast.makeText(getContext(), "invalid key", Toast.LENGTH_SHORT).show();
                 }

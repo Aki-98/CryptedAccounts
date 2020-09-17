@@ -33,7 +33,7 @@ public class AccountFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_accounts);
         EncryptionManager encryptionManager = new EncryptionManager(getContext());
-        AccountAdapter accountAdapter = new AccountAdapter();
+        AccountAdapter accountAdapter = new AccountAdapter(masterKey);
 
         try {
             accountAdapter.setAccounts(encryptionManager.getEncryptedAccounts(masterKey));
@@ -47,7 +47,7 @@ public class AccountFragment extends Fragment {
 
         FloatingActionButton fabAddAcc = view.findViewById(R.id.fab_add_account);
         fabAddAcc.setOnClickListener((View v) -> {
-            activityCallbackListener.onCallback(masterKey, Constants.ADD_NEW_ACC);
+            activityCallbackListener.onCallback(masterKey, Constants.ADD_NEW_ACC, null);
         });
 
         return view;

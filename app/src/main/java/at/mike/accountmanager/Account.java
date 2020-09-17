@@ -10,17 +10,14 @@ public class Account {
 
     private String password;
 
-    private String logo;
-
     public Account() {
     }
 
-    public Account(String platform, String username, String email, String password, String logo) {
+    public Account(String platform, String username, String email, String password) {
         this.platform = platform;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.logo = logo;
     }
 
     public String getPlatform() {
@@ -53,13 +50,5 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
     }
 }

@@ -26,9 +26,12 @@ public class AddOrUpdAccountFragment extends Fragment {
     private String masterKey;
     private ActivityCallback activityCallbackListener;
     private Toolbar toolbar;
+    private Account account;
+    private EncryptionManager encryptionManager;
 
-    public AddOrUpdAccountFragment(String master_key, int mode) {
-        masterKey = master_key;
+    public AddOrUpdAccountFragment(String master_key, int mode, Account account) {
+        this.masterKey = master_key;
+        this.account = account;
     }
 
     @Nullable
@@ -43,24 +46,31 @@ public class AddOrUpdAccountFragment extends Fragment {
         textPassword = view.findViewById(R.id.textPassword);
         toolbar = view.findViewById(R.id.toolbar);
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.check:
-                        if (isDataValid()) {
-                            saveAccount();
-                            activityCallbackListener.onCallback(masterKey, Constants.OPEN_ACC_FRG);
-                        }
+        encryptionManager = new EncryptionManager(view.getContext());
 
-                        break;
-                    case R.id.visible:
-                    default:
-                        break;
+        if (account != null) {
+            initializeTextViews();
+        }
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.account_update) {
+                if (isDataValid()) {
+                    saveAccount();
+                    activityCallbackListener.onCallback(masterKey, Constants.OPEN_ACC_FRG, null);
                 }
-
-                return true;
             }
+            else if (item.getItemId() == R.id.account_delete) {
+                if (textPlatform.getText().length() > 0) {
+                    try {
+                        encryptionManager.deleteAccount(masterKey, textPlatform.getText().toString());
+                        activityCallbackListener.onCallback(masterKey, Constants.OPEN_ACC_FRG, null);
+                    } catch (AEADBadTagException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            return true;
         });
 
         return view;
@@ -113,5 +123,12 @@ public class AddOrUpdAccountFragment extends Fragment {
         }
 
         return true;
+    }
+
+    private void initializeTextViews() {
+        textPlatform.setText(account.getPlatform());
+        textMail.setText(account.getEmail());
+        textUsername.setText(account.getUsername());
+        textPassword.setText(account.getPassword());
     }
 }
