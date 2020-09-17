@@ -1,31 +1,17 @@
 package at.mike.accountmanager;
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "account")
 public class Account {
 
-    @PrimaryKey
-    @NonNull
     private String platform;
 
-    @ColumnInfo
     private String username;
 
-    @ColumnInfo
     private String email;
 
-    @ColumnInfo
     private String password;
 
-    @ColumnInfo
     private String logo;
 
-    @Ignore
     public Account() {
     }
 

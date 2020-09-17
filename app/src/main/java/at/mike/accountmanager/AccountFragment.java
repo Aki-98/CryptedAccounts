@@ -2,7 +2,6 @@ package at.mike.accountmanager;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
 
 import javax.crypto.AEADBadTagException;
 
@@ -50,20 +45,9 @@ public class AccountFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
 
-        /*AccountViewModel accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
-        accountViewModel.getAllAccounts().observe(getViewLifecycleOwner(), new Observer<List<Account>>() {
-            @Override
-            public void onChanged(List<Account> accounts) {
-                accountAdapter.setAccounts(accounts);
-            }
-        });*/
-
         FloatingActionButton fabAddAcc = view.findViewById(R.id.fab_add_account);
-        fabAddAcc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activityCallbackListener.onCallback(masterKey, Constants.ADD_NEW_ACC);
-            }
+        fabAddAcc.setOnClickListener((View v) -> {
+            activityCallbackListener.onCallback(masterKey, Constants.ADD_NEW_ACC);
         });
 
         return view;
