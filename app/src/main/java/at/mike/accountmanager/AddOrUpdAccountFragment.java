@@ -1,18 +1,28 @@
 package at.mike.accountmanager;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.io.File;
+import java.util.List;
 
 import javax.crypto.AEADBadTagException;
 
@@ -23,6 +33,7 @@ public class AddOrUpdAccountFragment extends Fragment {
     private TextInputEditText textMail;
     private TextInputEditText textUsername;
     private TextInputEditText textPassword;
+    private ImageView imageLogo;
     private String masterKey;
     private ActivityCallback activityCallbackListener;
     private Toolbar toolbar;
@@ -45,11 +56,15 @@ public class AddOrUpdAccountFragment extends Fragment {
         textUsername = view.findViewById(R.id.textUsername);
         textPassword = view.findViewById(R.id.textPassword);
         toolbar = view.findViewById(R.id.toolbar);
+        imageLogo = view.findViewById(R.id.imageViewLogo);
 
         encryptionManager = new EncryptionManager(view.getContext());
 
         if (account != null) {
-            initializeTextViews();
+            initializeViews();
+        }
+        else {
+            account = new Account();
         }
 
         toolbar.setOnMenuItemClickListener(item -> {
@@ -73,6 +88,13 @@ public class AddOrUpdAccountFragment extends Fragment {
             return true;
         });
 
+        imageLogo.setOnClickListener(l -> {
+            ImagePicker.create(this)
+                    .single()
+                    .limit(1)
+                    .start();
+        });
+
         return view;
     }
 
@@ -91,9 +113,23 @@ public class AddOrUpdAccountFragment extends Fragment {
         activityCallbackListener = null;
     }
 
-    private void saveAccount() {
-        Account account = new Account();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
+            Image image = ImagePicker.getFirstImageOrNull(data);
+            Uri imageUri = image.getUri();
 
+            // load image in ImageView
+            loadLogo(imageUri);
+
+            account.setLogo(imageUri.toString());
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void saveAccount() {
         account.setPlatform(textPlatform.getText().toString());
         account.setEmail(textMail.getText().toString());
         account.setUsername(textUsername.getText().toString());
@@ -125,10 +161,22 @@ public class AddOrUpdAccountFragment extends Fragment {
         return true;
     }
 
-    private void initializeTextViews() {
+    private void initializeViews() {
         textPlatform.setText(account.getPlatform());
         textMail.setText(account.getEmail());
         textUsername.setText(account.getUsername());
         textPassword.setText(account.getPassword());
+
+        if (account.getLogo() != null) {
+            loadLogo(Uri.parse(account.getLogo()));
+        }
+    }
+
+    private void loadLogo(Uri logo) {
+        Log.d(TAG, "logo path: " + logo);
+
+        GlideApp.with(this)
+                .load(logo)
+                .into(imageLogo);
     }
 }
