@@ -9,4 +9,5 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_logo">Logo</string>
+    <string name="title_platform">Platform</string>
 </resources>

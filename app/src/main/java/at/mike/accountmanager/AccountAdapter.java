@@ -1,6 +1,8 @@
 package at.mike.accountmanager;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,20 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         Account account = accounts.get(position);
 
         holder.textViewPlatform.setText(account.getPlatform());
+
+        Uri uriLogo;
+
+        if (account.getLogo() == null) {
+            uriLogo = Uri.parse("android.resource://at.mike.accountmanager/drawable/ic_platform");
+        } else {
+            uriLogo = Uri.parse(account.getLogo());
+        }
+
+        GlideApp.with(context)
+                .load(uriLogo)
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.imageViewLogoList);
+
         holder.itemView.setOnClickListener((View v) -> {
             // open AddOrUpdAccountFragment
             activityCallbackListener.onCallback(masterKey, Constants.UPD_ACC, account);
@@ -57,11 +75,13 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewPlatform;
+        private ImageView imageViewLogoList;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textViewPlatform = itemView.findViewById(R.id.textViewPlatform);
+            imageViewLogoList = itemView.findViewById(R.id.imageViewLogoList);
         }
     }
 }

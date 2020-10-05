@@ -1,7 +1,5 @@
 package at.mike.accountmanager;
 
-import android.net.Uri;
-
 public class Account {
 
     private String platform;

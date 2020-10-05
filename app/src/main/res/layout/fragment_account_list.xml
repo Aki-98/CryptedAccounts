@@ -24,7 +24,7 @@
         android:backgroundTint="@color/colorAccent"
         app:fabSize="normal"
         android:src="@drawable/ic_round_add_24"
-        android:outlineAmbientShadowColor="@color/colorPrimaryDark">
+        app:borderWidth="0dp">
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </FrameLayout>
