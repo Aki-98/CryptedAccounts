@@ -1,0 +1,26 @@
+Hello
+Maikaru-Sensei,
+
+I hope this email finds you well.
+
+I recently started planning an Android application inspired by Microsoft's Authenticator, and I came across your project CryptedAccounts. I must say, your work is impressive and aligns well with my vision. I am writing to seek your permission to fork your project for further development.
+
+Here are the key goals I aim to achieve:
+
+- BringUp the project to Android S.
+- Analyze potential attack scenarios and enhance security measures.
+- Implement functionality similar to Authenticator, such as automatic key generation and a user-friendly feature to autofill keys into corresponding applications.
+- Ensure the key generation process is transparent, with users having the option to input keywords to determine the encryption algorithm.
+- Add functionality for transferring the password database to a new device via Bluetooth.
+- Optionally, include fingerprint authentication to reveal sensitive information.
+
+This new development will cater to users with higher confidentiality requirements, serving as a reliable password management terminal. 
+It will not be used for commercial purposes but will be made available to those in need.
+
+Could you kindly let me know which Open Source Software License governs your project? 
+Would you be open to me forking your project to proceed with this development?
+
+Thank you for your time and consideration.
+
+Best regards,
+Aki
